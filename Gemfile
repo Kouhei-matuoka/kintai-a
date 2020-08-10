@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rails',        '~> 5.1.6'
 gem 'bcrypt' # 今回追加するgemです
+gem 'faker' # この行を追加してください。
+gem 'will_paginate' # この行を追加してください。
+gem 'bootstrap-will_paginate' # この行を追加してください。
 gem 'rails-i18n'
 gem 'bootstrap-sass'
 gem 'puma',         '~> 3.7'
