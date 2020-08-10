@@ -1,27 +1,45 @@
 <% provide(:title, "ユーザー一覧") %>
-<h1>ユーザー一覧</h1>
+
+<h1><%= params[:search].present? ? "検索結果" : "ユーザー一覧" %></h1>
+<h3 class="center"><%= link_to "戻る", users_path if params[:search].present? %></h3>
+
 
 <div class="col-md-10 col-md-offset-1">
-  <%= will_paginate %>
+  <div class="input-group">
+    <p>ユーザー名検索</p>
+    <%= form_tag(users_path, method: :get) do %>
+      <span class="input-group-btn">
+        <%= text_field_tag :search, '', placeholder: 'キーワドを入力', class: "form-control"  %>
+        <%= submit_tag '検索', name: :nil, class: "btn btn-primary" %>
+      </span>
+    <% end %>
+  </div>
+  <div class="paginate-top"><%= will_paginate %></div>
   <table class="table table-condensed table-hover" id="table-users">
     <thead>
       <tr>
         <th><%= User.human_attribute_name :name %></th>
+        <th><%= User.human_attribute_name :basic_time if current_user.admin? %></th>
+        <th><%= User.human_attribute_name :work_time if current_user.admin? %></th>
       </tr>
     </thead>
 
     <% @users.each do |user| %>
       <tr>
-        <td><%= link_to user.name, user %></td>
+        <td><%= current_user.admin? ? (link_to user.name, user) : user.name %></td>
+        <td><%= format_basic_info(user.basic_time) if current_user.admin? %></td>
+        <td><%= format_basic_info(user.work_time) if current_user.admin? %></td>
         <td>
-          <% if current_user.admin? && !current_user?(user) %>
-            <%= link_to "削除", user, method: :delete,
-                data: { confirm: "#{user.name}のデータを削除しますか？" },
-                class: "btn btn-danger" %>
-          <% end %>
+          <%= link_to "基本情報編集", edit_basic_info_user_path(user), remote: true, class: "btn btn-success" if current_user.admin? %>
+          <%= link_to "削除", user, method: :delete,
+              data: { confirm: "#{user.name}のデータを削除しますか？" },
+              class: "btn btn-danger" if current_user.admin? && !current_user?(user) %>
         </td>
       </tr>
     <% end %>
   </table>
   <%= will_paginate %>
 </div>
+
+<!-- モーダルウィドウ -->
+<div id="edit_basic_info" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
