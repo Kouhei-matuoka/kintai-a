@@ -83,6 +83,19 @@ p {
   margin: 30px 0 10px 0;
 }
 
+/* ユーザー勤怠情報テーブル */
+
+#table-attendances {
+  th {
+    vertical-align: middle;
+    text-align: center;
+  }
+  td {
+    vertical-align: middle;
+    text-align: center;
+  }
+}
+
 /* ユーザー登録・編集フォーム */
 
 
