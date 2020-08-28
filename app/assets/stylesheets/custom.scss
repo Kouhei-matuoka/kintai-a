@@ -23,6 +23,23 @@ textarea {
   margin-bottom: 10px;
 }
 
+.btn-left {
+  text-align: left;
+}
+
+.bootstrap-date {
+  display: inline-block;
+  width: 5em;
+}
+
+.close {
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+}
+
+
 /* タイポグラフィ */
 
 h1, h2, h3, h4, h5, h6 {
@@ -83,6 +100,10 @@ p {
   margin: 30px 0 10px 0;
 }
 
+.btn-edit {
+  margin: -20px 0 0 -65px;
+}
+
 /* ユーザー勤怠情報テーブル */
 
 #table-attendances {
@@ -94,6 +115,42 @@ p {
     vertical-align: middle;
     text-align: center;
   }
+}
+
+/* 勤怠変更ログページ */
+
+.search-group {
+  margin: 0 0 10px -15px;
+}
+
+.search-btn {
+  margin-left: -10px;
+}
+
+/* 上長勤怠情報テーブル */
+
+.news p {
+  line-height: 0.8em;
+  padding-bottom: 2px;
+}
+
+.application-form {
+  .btn {
+    margin-top: 10px;
+  }
+}
+
+.notice-superior {
+  border: solid 2px #ff0000;
+  color: #ff0000;
+  font-weight: bold;
+}
+
+.notice-superior:hover {
+  border: solid 2px #f96250;
+  color: #f96250;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 /* ユーザー登録・編集フォーム */
@@ -142,15 +199,73 @@ p {
 }
 
 .input-group {
-  float: right;
-  margin: 20px 15% 0 0px;
+  margin: 20px 0 0 15px;
   p {
     margin-bottom: 10px;
   }
 }
 
+.csv-group {
+  margin-right: 25%;
+}
+
+.btn-csv {
+  margin-top: 10px;
+}
+
 .paginate-top {
-  margin-top: 70px;
+  margin-bottom: -30px;
+}
+
+.paginate-bottom {
+  margin-top: -30px;
+}
+
+.acd-users {
+  margin-top: 20px;
+}
+
+.collapse-body {
+  margin-bottom: 50px;
+}
+
+/* 出勤社員一覧ページ */
+
+#attend-table {
+  vertical-align: middle;
+  text-align: center;
+  font-weight: bold;
+  thead td {
+    vertical-align: bottom;
+    border-bottom: 3px double #ccc;
+  }
+}
+
+/* 拠点一覧ページ */
+
+#offices-table {
+  vertical-align: middle;
+  text-align: center;
+  thead td {
+    vertical-align: bottom;
+    border-bottom: 3px double #ccc;
+  }
+}
+
+.label-office--edit {
+  margin-top: 5px;
+}
+
+.btn-office--edit {
+  margin-top: 10px;
+}
+
+.btn-office-new {
+  margin: -20px 0 0 -65px;
+}
+
+.collapse-edit {
+  text-align: left;
 }
 
 /* モーダルウィンドウ位置調整 */

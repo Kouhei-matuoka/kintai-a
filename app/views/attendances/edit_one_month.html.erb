@@ -28,21 +28,33 @@
               <% end %>
               <%= $days_of_the_week[day.worked_on.wday] %>
             </td>
-            <% if !current_user.admin? && (Date.current < day.worked_on) %>
-              <td><%= attendance.time_field :started_at, readonly: true, class: "form-control" %></td>
-              <td><%= attendance.time_field :finished_at, readonly: true, class: "form-control" %></td>
+            <% if Date.current <= day.worked_on && day.finished_at.blank? %>
+              <td><%= attendance.time_select :changed_started_at, {include_blank: true}, disabled: true, class: "form-control bootstrap-date" %></td>
+              <td><%= attendance.time_select :changed_finished_at, {include_blank: true}, disabled: true, class: "form-control bootstrap-date" %></td>
             <% else %>
-              <td><%= attendance.time_field :started_at, class: "form-control" %></td>
-              <td><%= attendance.time_field :finished_at, class: "form-control" %></td>
+              <td><%= attendance.time_select :changed_started_at, {include_blank: true}, class: "form-control bootstrap-date" %></td>
+              <td><%= attendance.time_select :changed_finished_at,{include_blank: true}, class: "form-control bootstrap-date" %></td>
             <% end %>
-            <td></td>
+            <td><%= attendance.check_box :change_next_day_check %></td>
             <td>
-              <% if day.started_at.present? && day.finished_at.present? %>
-                <%= working_times(day.started_at, day.finished_at) %>
+              <% if day.changed_started_at.present? && day.changed_finished_at.present? %>
+                <%= format("%.2f", working_times(day.changed_started_at, day.changed_finished_at, day.change_next_day_check)) %>
               <% end %>
             </td>
-            <td><%= attendance.text_field :note, class: "form-control" %></td>
-            <td></td>
+            <td><%= attendance.text_field :note, placeholder: "入力必須", class: "form-control" %></td>
+            <td>
+              <% if Date.current <= day.worked_on && day.finished_at.blank? %>
+                <%= attendance.collection_select :change_superior_id, @superiors, :id, :name,
+                                                 {include_blank: true, selected: nil}, disabled: true, class: "form-control" %>
+              <% else %>
+                <%= attendance.collection_select :change_superior_id, @superiors, :id, :name,
+                                                   {include_blank: true, selected: nil}, class: "form-control" %>
+              <% end %>
+              <%= attendance.hidden_field :change_status, value: "申請中" %>
+              <%= attendance.hidden_field :change_approval, value: 2 %>
+              <%= attendance.hidden_field :change_check, value: "0" %>
+              <%= attendance.hidden_field :calendar_day, value: day.worked_on.to_date %>
+            </td>
           </tr>
         <% end %>
       <% end %>
@@ -52,5 +64,5 @@
     <%= link_to "キャンセル", user_path(date: @first_day), class: "btn btn-lg btn-primary" %>
     <%= f.submit "編集を保存する", class: "btn btn-lg btn-primary" %>
   </div>
-</div> 
+</div>
 <% end %>

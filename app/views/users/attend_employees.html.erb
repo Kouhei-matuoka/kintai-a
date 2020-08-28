@@ -1,0 +1,23 @@
+<% provide(:title, "出勤社員一覧") %>
+<h1>出勤社員一覧</h1>
+
+<% if @users.count == 0 %>
+  <h1>現在出社している社員はいません。</h1>
+<% else %>
+  <table class="table table-condensed table-bordered table-hover" id="attend-table">
+    <thead>
+      <tr>
+        <td>社員番号</td>
+        <td>名前</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.zip(@attendances) do |user, day| %>
+        <tr>
+          <td><%= user.employee_number %></td>
+          <td><%= user.name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %> 
