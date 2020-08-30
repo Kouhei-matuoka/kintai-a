@@ -9,7 +9,7 @@
   </div>
 <% end %>
 
-
+<!--<= @start_date %><= @last_date %>-->
 
 <div>
   <table class="table table-condensed table-bordered table-hover">
@@ -25,9 +25,10 @@
       </tr>
     </thead>
     <tbody>
-      <% @logs.each do |day| %>
+      <% @logs.zip(@superiors).each do |day, superior| %>
         <% unless params[:search].blank? %> <!-- 検索した年月の1ヶ月の勤怠変更ログを表示する -->
           <% if day.worked_on.year.to_i == @search_year.to_i && day.worked_on.month.to_i == @search_month.to_i  %>
+            <!--< if Attendance.where.not(change_superior_id: nil).where(change_approval: 3) >-->
             <tr>
               <td class="center">
                 <%= day.worked_on.strftime("%Y年%m月%d日") %>
@@ -42,7 +43,7 @@
               <td class="center"><%= day.finished_at.try(:floor_to, 15.minutes).try(:strftime, "%H:%M") %></td>
               <td class="center"><%= day.changed_started_at.try(:floor_to, 15.minutes).try(:strftime, "%H:%M") %></td>
               <td class="center"><%= day.changed_finished_at.try(:floor_to, 15.minutes).try(:strftime, "%H:%M") %></td>
-              <td class="center"><%= day.change_superior_name %></td>
+              <td class="center"><%= User.find(day.change_superior_id).name if day.change_superior_id.present?  %></td>
               <td class="center">
                 <%= day.approval_date.try(:strftime, "%Y年%m月%d日") %>
                 <% if day.approval_date.present? %>
@@ -72,7 +73,7 @@
             <td class="center"><%= day.finished_at.try(:floor_to, 15.minutes).try(:strftime, "%H:%M") %></td>
             <td class="center"><%= day.changed_started_at.try(:floor_to, 15.minutes).try(:strftime, "%H:%M") %></td>
             <td class="center"><%= day.changed_finished_at.try(:floor_to, 15.minutes).try(:strftime, "%H:%M") %></td>
-            <td class="center"><%= day.change_superior_name %></td>
+            <td class="center"><%= User.find(day.change_superior_id).name if day.change_superior_id.present?  %></td>
             <td class="center">
               <%= day.approval_date.try(:strftime, "%Y年%m月%d日") %>
               <% if day.approval_date.present? %>

@@ -2,7 +2,9 @@ class AttendancesController < ApplicationController
   before_action :set_user, only: %i(edit_one_month update_one_month update_one_month_apply one_month_apply confirmation_one_month_apply
                                     edit_overtime_work_apply update_overtime_work_apply recive_overtime_work_apply confirmation_overtime_work_apply
                                     recive_change_attendance_apply confirmation_change_attendance_apply edit_log)
-  before_action :logged_in_user
+  before_action :logged_in_user, only: %i(update edit_one_month update_one_month one_month_apply update_one_month_apply confirmation_one_month_apply
+                                          edit_overtime_work_apply update_overtime_work_apply recive_overtime_work_apply confirmation_overtime_work_apply
+                                          recive_change_attendance_apply confirmation_change_attendance_apply edit_log)
   before_action :superior_user, only: %i(one_month_apply confirmation_one_month_apply recive_overtime_work_apply confirmation_overtime_work_apply
                                         recive_change_attendance_apply confirmation_change_attendance_apply)
   before_action :correct_user, only: %i(update_one_month_apply edit_overtime_work_apply recive_overtime_work_apply confirmation_overtime_work_apply
@@ -177,6 +179,11 @@ class AttendancesController < ApplicationController
             item[:change_check] = "0"
             item[:approval_date] = nil
             attendance.update_attributes(item)
+          elsif item[:change_status] == "なし"
+              item[:change_approval] = 1
+              item[:change_check] = "0"
+              item[:approval_date] = nil
+              attendance.update_attributes(item)
           end
         end
       end

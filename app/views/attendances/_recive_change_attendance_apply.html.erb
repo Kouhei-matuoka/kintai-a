@@ -2,15 +2,15 @@
   <div class="modal-content">
     <div class="modal-body">
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true"><%= link_to "&times;".html_safe, "#{@url}" %></span>
+        <span aria-hidden="true">&times;</span>
       </button>
       <div class="row">
         <div class="col-md-12">
-          <%= form_with(model: @user, url: attendances_confirmation_change_attendance_apply_user_path(date: @first_day), local: true, method: :patch) do |f| %>
-            <% @users.each do |user| %>
-              <% attendances = Attendance.where(user_id: user.id).where(change_status: "申請中") %>
-              <% attendances.each do |attendance| %>
-                <% if attendance.change_superior_id == current_user.id && attendance.change_approval == 2 %>
+          <%= form_with(model: @user, url: attendances_confirmation_change_attendance_apply_user_path(date: @first_day), local: true, method: :patch) do |f| %> <!-- 1 -->
+            <% @users.each do |user| %> <!-- 2 -->
+              <% attendances = Attendance.where(user_id: user.id).where(change_approval: 2) %>
+              <% attendances.each do |attendance| %> <!-- 3 -->
+                <% if attendance.change_superior_id == current_user.id && attendance.change_approval == 2 %> <!-- 4 -->
                 <h3 class="center">【<%= user.name %>からの勤怠変更申請】</h3>
                 <table class="table table-condensed table-bordered table-hover">
                   <thead>
@@ -42,12 +42,12 @@
                     </tr>
                   </thead>
                 <% break %>
-                <% end %>
-              <% end %>
-
-              <% attendances = Attendance.where(user_id: user.id).where(change_status: "申請中").merge(Attendance.order("attendances.worked_on DESC")) %>
-              <% attendances.each do |attendance| %>
-                <% if attendance.change_superior_id == current_user.id && attendance.change_approval == 2 %>
+                <% end %> <!-- 4 -->
+              <% end %> <!-- 3 -->
+              
+              <% attendances = Attendance.where(user_id: user.id).where(change_approval: 2).merge(Attendance.order("attendances.worked_on DESC")) %>
+              <% attendances.each do |attendance| %> <!-- 5 -->
+                <% if attendance.change_superior_id == current_user.id && attendance.change_approval == 2 %> <!-- 5.5 -->
                   <%= fields_for "attendances[]", attendance do |at| %> <!-- 6 -->
                     <tbody>
                       <tr>
@@ -79,11 +79,11 @@
                         <td class="center"><%= link_to "確認", user_path(id: user.id, date: attendance.worked_on.beginning_of_month), class: "btn btn-lg btn-primary" %></td>
                       </tr>
                     </tbody>
-                  <% end %>
-                <% end %>
-              <% end %>
+                  <% end %> <!-- 6 -->
+                <% end %> <!-- 5.5 -->
+              <% end %> <!-- 5 -->
               </table>
-            <% end %>
+            <% end %> <!-- 2 -->
             <div class="center">
               <% if has_change_apply.count == 0 %>
                 <h1>申請情報はありません。</h1>
@@ -91,7 +91,7 @@
                 <%= f.submit "変更を送信する", class: "btn btn-lg btn-primary" %>
               <% end %>
             </div>
-          <% end %>
+          <% end %> <!-- 1 -->
         </div>
       </div>
     </div>

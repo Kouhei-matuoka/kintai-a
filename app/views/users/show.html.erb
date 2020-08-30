@@ -145,8 +145,8 @@
           </td>
           <td><%= day.overtime_detail %></td>
           <td>
-            <%= day.change_superior_name %><%= change_status_text(day.change_status) %>
-            <%= tag.br if day.change_status.present? && day.overtime_status.present? %>
+            <%= day.change_superior_name unless day.change_status == "なし" %><%= change_status_text(day.change_status) %>
+            <%= tag.br if day.change_status.present? && day.change_status != "なし" && day.overtime_status.present? %>
             <%= day.overtime_superior_name %><%= overtime_status_text(day.overtime_status) %>
           </td>
         </tr>
